@@ -21,7 +21,7 @@ const Skills = () => {
     "VS Code",
     "Git",
     "Chrome DevTools",
-    
+
     "Vercel",
     "npm",
   ];
@@ -54,7 +54,7 @@ const Skills = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Skills
           </h2>
-          <div className="w-24 h-1 bg-blue-500 mx-auto mb-4" />
+          <div className="w-24 h-1 bg-emerald-500 mx-auto mb-4" />
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Technologies I'm learning and using in my projects.
           </p>
@@ -70,7 +70,7 @@ const Skills = () => {
               {skills.map((skill, index) => (
                 <div
                   key={skill.name}
-                  className={`p-4 bg-slate-800/50 rounded-lg border border-slate-700 text-center group hover:border-blue-500/50 transition-all duration-300`}
+                  className={`p-4 bg-slate-800/50 rounded-lg border border-slate-700 text-center group hover:border-emerald-500/50 transition-all duration-300`}
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0)" : "translateY(20px)",
@@ -95,7 +95,7 @@ const Skills = () => {
               {tools.map((tool, index) => (
                 <div
                   key={tool}
-                  className={`p-4 bg-slate-800/50 rounded-lg border border-slate-700 text-center group hover:border-blue-500/50 transition-all duration-300`}
+                  className={`p-4 bg-slate-800/50 rounded-lg border border-slate-700 text-center group hover:border-emerald-500/50 transition-all duration-300`}
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0)" : "translateY(20px)",

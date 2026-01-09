@@ -33,7 +33,7 @@ const About = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             About Me
           </h2>
-          <div className="w-24 h-1 bg-blue-500 mx-auto"></div>
+          <div className="w-24 h-1 bg-emerald-500 mx-auto"></div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -41,24 +41,24 @@ const About = () => {
             <h3 className="text-2xl font-semibold text-white mb-4">
               Computer Science Student
             </h3>
-            
+
             <p className="text-gray-300 text-lg leading-relaxed">
-              I'm a Computer Science student passionate about web development and creating 
-              innovative digital solutions. Currently learning modern technologies like React, 
+              I'm a Computer Science student passionate about web development and creating
+              innovative digital solutions. Currently learning modern technologies like React,
               Next.js, and TypeScript while building projects that solve real-world problems.
             </p>
-            
+
             <p className="text-gray-300 text-lg leading-relaxed">
-              I love learning new technologies and applying them to creative projects. When I'm not 
-              studying or coding, you can find me exploring the latest tech trends, working on 
+              I love learning new technologies and applying them to creative projects. When I'm not
+              studying or coding, you can find me exploring the latest tech trends, working on
               personal projects, or collaborating with fellow students on exciting ideas.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-4">
               {['React', 'JavaScript', 'Python', 'Tailwind CSS', 'Node.js', 'Git'].map((tech) => (
-                <span 
+                <span
                   key={tech}
-                  className="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-full text-sm font-medium border border-blue-600/30"
+                  className="px-3 py-1 bg-emerald-600/20 text-emerald-400 rounded-full text-sm font-medium border border-emerald-600/30"
                 >
                   {tech}
                 </span>
@@ -68,12 +68,12 @@ const About = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {features.map((feature, index) => (
-              <div 
+              <div
                 key={feature.title}
-                className="p-6 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
+                className="p-6 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 hover:transform hover:scale-105"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <feature.icon className="w-8 h-8 text-blue-500 mb-4" />
+                <feature.icon className="w-8 h-8 text-emerald-500 mb-4" />
                 <h4 className="text-lg font-semibold text-white mb-2">
                   {feature.title}
                 </h4>

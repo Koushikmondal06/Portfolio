@@ -5,7 +5,7 @@
 :root {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 15, 23, 42;
+  --background-end-rgb: 15, 30, 20;
 }
 
 @layer base {
@@ -16,19 +16,19 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 217 91% 60%;
+    --primary: 158 64% 52%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217 32% 17%;
+    --secondary: 158 32% 17%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 217 32% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 32% 17%;
+    --muted: 158 32% 17%;
+    --muted-foreground: 158 20% 65%;
+    --accent: 158 32% 17%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 217 32% 17%;
-    --input: 217 32% 17%;
-    --ring: 217 91% 60%;
+    --border: 158 32% 17%;
+    --input: 158 32% 17%;
+    --ring: 158 64% 52%;
     --radius: 0.5rem;
   }
 }
@@ -37,6 +37,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-black text-white;
   }
@@ -44,22 +45,89 @@
 
 /* Custom animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+
+  66% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+    transform: scale(1.05);
+  }
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes wiggle {
+
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-fade {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 8s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
@@ -69,6 +137,97 @@
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 4s ease infinite;
+}
+
+.animate-wiggle {
+  display: inline-block;
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+/* Animated Background Particles */
+@keyframes float-around {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+
+  25% {
+    transform: translate(100px, -100px) scale(1.2);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-50px, -150px) scale(0.8);
+    opacity: 0.4;
+  }
+
+  75% {
+    transform: translate(-100px, -50px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+.particle-bg {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 100%);
+  filter: blur(40px);
+  animation: float-around 20s ease-in-out infinite;
+}
+
+.particle-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 10%;
+  animation-duration: 25s;
+}
+
+.particle-2 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  right: 10%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.particle-3 {
+  width: 250px;
+  height: 250px;
+  bottom: 20%;
+  left: 20%;
+  animation-duration: 28s;
+  animation-delay: -10s;
+}
+
+.particle-4 {
+  width: 180px;
+  height: 180px;
+  top: 30%;
+  left: 50%;
+  animation-duration: 22s;
+  animation-delay: -15s;
+}
+
+.particle-5 {
+  width: 220px;
+  height: 220px;
+  bottom: 30%;
+  right: 30%;
+  animation-duration: 26s;
+  animation-delay: -8s;
+}
+
+.particle-6 {
+  width: 150px;
+  height: 150px;
+  top: 70%;
+  left: 60%;
+  animation-duration: 24s;
+  animation-delay: -12s;
 }
 
 /* Smooth scrolling */
@@ -88,8 +247,43 @@ html {
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
   border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+/* Enhanced hover effects */
+button,
+a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover,
+a:hover {
+  transform: translateY(-2px);
+}
+
+/* Carousel custom styles */
+.carousel-slide-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.carousel-slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.carousel-slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.carousel-slide-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 500ms, transform 500ms;
 }

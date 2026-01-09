@@ -15,7 +15,7 @@ const Contact = () => {
         >
           Contact Me
         </h2>
-        <div className="w-24 h-1 bg-blue-500 mx-auto mb-6" />
+        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6" />
 
         {/* Subtitle */}
         <p className="text-gray-400 text-lg mb-8">
@@ -25,10 +25,10 @@ const Contact = () => {
         {/* Email Display */}
         <a
           href="mailto:your.email@example.com"
-          className="text-blue-400 hover:text-blue-500 text-xl underline break-words"
+          className="text-emerald-400 hover:text-emerald-500 text-xl underline break-words"
           aria-label="Send email"
         >
-         koushikmondal0069@gmail.com
+          koushikmondal0069@gmail.com
         </a>
       </div>
     </section>
