@@ -1,64 +1,115 @@
 "use client";
 
+import { useEffect, useRef } from 'react';
 import { Code, Palette, Zap, Users } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
   const features = [
     {
       icon: Code,
       title: 'Clean Code',
-      description: 'Writing maintainable, scalable, and efficient code that follows best practices.'
+      description: 'Maintainable, scalable, and efficient code following best practices.',
     },
     {
       icon: Palette,
       title: 'Design Focus',
-      description: 'Creating visually appealing interfaces with attention to detail and user experience.'
+      description: 'Visually appealing interfaces with attention to detail and UX.',
     },
     {
       icon: Zap,
       title: 'Performance',
-      description: 'Optimizing applications for speed, accessibility, and cross-browser compatibility.'
+      description: 'Optimizing for speed, accessibility, and cross-browser compatibility.',
     },
     {
       icon: Users,
       title: 'Collaboration',
-      description: 'Working effectively with teams to deliver projects on time and exceed expectations.'
-    }
+      description: 'Working effectively with teams to deliver quality projects.',
+    },
   ];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Heading reveal
+      gsap.fromTo(headingRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
+        }
+      );
+
+      // Content reveal
+      gsap.fromTo(contentRef.current,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1, x: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: contentRef.current, start: 'top 80%' },
+        }
+      );
+
+      // Cards stagger
+      if (cardsRef.current) {
+        gsap.fromTo(cardsRef.current.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: cardsRef.current, start: 'top 80%' },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const techTags = ['React', 'JavaScript', 'Python', 'Tailwind CSS', 'Node.js', 'Git'];
+
   return (
-    <section id="about" className="py-20 bg-gradient-to-b from-black to-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            About Me
-          </h2>
-          <div className="w-24 h-1 bg-emerald-500 mx-auto"></div>
+    <section id="about" ref={sectionRef} className="py-24 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Heading */}
+        <div ref={headingRef} className="mb-16" style={{ opacity: 0 }}>
+          <p className="section-heading">// about</p>
+          <h2 className="section-title text-3xl sm:text-4xl">Who I Am</h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-white mb-4">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Left: Content */}
+          <div ref={contentRef} className="space-y-6" style={{ opacity: 0 }}>
+            <h3
+              className="text-xl font-semibold text-[var(--text-primary)]"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
               Computer Science Student
             </h3>
 
-            <p className="text-gray-300 text-lg leading-relaxed">
+            <p className="text-[var(--text-muted)] leading-relaxed">
               I'm a Computer Science student passionate about web development and creating
               innovative digital solutions. Currently learning modern technologies like React,
               Next.js, and TypeScript while building projects that solve real-world problems.
             </p>
 
-            <p className="text-gray-300 text-lg leading-relaxed">
-              I love learning new technologies and applying them to creative projects. When I'm not
-              studying or coding, you can find me exploring the latest tech trends, working on
-              personal projects, or collaborating with fellow students on exciting ideas.
+            <p className="text-[var(--text-muted)] leading-relaxed">
+              I love exploring the latest tech trends, working on personal projects,
+              and collaborating with fellow students on exciting ideas.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-4">
-              {['React', 'JavaScript', 'Python', 'Tailwind CSS', 'Node.js', 'Git'].map((tech) => (
+            {/* Tech Tags */}
+            <div className="flex flex-wrap gap-2 pt-2">
+              {techTags.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1 bg-emerald-600/20 text-emerald-400 rounded-full text-sm font-medium border border-emerald-600/30"
+                  className="px-3 py-1 text-xs font-medium rounded-md bg-[var(--accent-subtle)] text-[var(--accent)] border border-[var(--accent)]/20"
+                  style={{ fontFamily: 'var(--font-mono)' }}
                 >
                   {tech}
                 </span>
@@ -66,18 +117,18 @@ const About = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={feature.title}
-                className="p-6 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 hover:transform hover:scale-105"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <feature.icon className="w-8 h-8 text-emerald-500 mb-4" />
-                <h4 className="text-lg font-semibold text-white mb-2">
+          {/* Right: Feature Cards */}
+          <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {features.map((feature) => (
+              <div key={feature.title} className="card p-5 cursor-pointer" style={{ opacity: 0 }}>
+                <feature.icon className="w-6 h-6 text-[var(--accent)] mb-3" strokeWidth={1.5} />
+                <h4
+                  className="text-sm font-semibold text-[var(--text-primary)] mb-1.5"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
                   {feature.title}
                 </h4>
-                <p className="text-gray-400 text-sm">
+                <p className="text-[var(--text-muted)] text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>

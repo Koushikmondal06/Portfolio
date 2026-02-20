@@ -1,155 +1,80 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef } from 'react';
+import { Github, Linkedin, Mail } from 'lucide-react';
+import gsap from 'gsap';
+import Terminal from '@/components/Terminal';
 
 const Hero = () => {
-  const [text, setText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const words = ['CS Student', 'Web Developer', 'Problem Solver', 'Tech Enthusiast'];
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const currentWord = words[currentIndex];
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headerRef.current,
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      );
 
-      if (isDeleting) {
-        setText(currentWord.substring(0, text.length - 1));
-      } else {
-        setText(currentWord.substring(0, text.length + 1));
-      }
+      gsap.fromTo(socialsRef.current?.children || [],
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, delay: 1, ease: 'power2.out' }
+      );
+    }, sectionRef);
 
-      if (!isDeleting && text === currentWord) {
-        setTimeout(() => setIsDeleting(true), 1000);
-      } else if (isDeleting && text === '') {
-        setIsDeleting(false);
-        setCurrentIndex((current) => (current + 1) % words.length);
-      }
-    }, isDeleting ? 50 : 100);
-
-    return () => clearTimeout(timeout);
-  }, [text, currentIndex, isDeleting, words]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => ctx.revert();
   }, []);
 
-  const scrollToAbout = () => {
-    const element = document.querySelector('#about');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const socials = [
+    { icon: Github, href: 'https://github.com/Koushikmondal06', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/koushik-mondal-011308329/', label: 'LinkedIn' },
+    { icon: Mail, href: '#contact', label: 'Email' },
+  ];
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Enhanced Background Effects with Parallax */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-slate-900 to-emerald-900/20"></div>
-
-      {/* Animated grid background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px',
-            transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
-          }}
-        ></div>
-      </div>
-
-      {/* Floating blobs with parallax */}
-      <div
-        className="absolute top-20 left-20 w-72 h-72 bg-emerald-600/10 rounded-full blur-3xl animate-float"
-        style={{
-          transform: `translate(${mousePosition.x * -0.02}px, ${mousePosition.y * -0.02}px)`
-        }}
-      ></div>
-      <div
-        className="absolute bottom-20 right-20 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl animate-float"
-        style={{
-          animationDelay: '2s',
-          transform: `translate(${mousePosition.x * -0.03}px, ${mousePosition.y * -0.03}px)`
-        }}
-      ></div>
-      <div
-        className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl animate-float"
-        style={{
-          animationDelay: '4s',
-          transform: `translate(${mousePosition.x * -0.025}px, ${mousePosition.y * -0.025}px)`
-        }}
-      ></div>
-
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6">
-            <span className="block text-white mb-2 hover:scale-105 transition-transform duration-300">Hi, I'm</span>
-            <span className="block bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent animate-gradient hover:scale-105 transition-transform duration-300">
-              Koushik Mondal
-            </span>
-          </h1>
-
-          <div className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-8 h-12 flex items-center justify-center">
-            <span className="border-r-2 border-emerald-500 pr-1 animate-pulse">
-              {text}
-            </span>
-          </div>
-
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed hover:text-gray-300 transition-colors duration-300">
-            Passionate about creating beautiful, functional, and user-centered digital experiences.
-            I bring ideas to life through code and design.
+    <section
+      id="home"
+      ref={sectionRef}
+      className="min-h-screen flex flex-col items-center justify-center relative px-4 sm:px-6"
+    >
+      <div className="relative z-10 w-full max-w-3xl mx-auto">
+        {/* Header info */}
+        <div ref={headerRef} className="mb-6 text-center" style={{ opacity: 0 }}>
+          <p className="text-[11px] text-[#4a5568] font-mono mb-1">
+            user@koushik-portfolio · bash · 120×40
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12 text-center sm:text-left">
-          {/* CTA Button */}
-          <Button
-            size="lg"
-            onClick={() => scrollToAbout()}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 text-lg font-semibold transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-emerald-500/50 animate-pulse-glow"
-          >
-            View My Work
-          </Button>
+        {/* Terminal */}
+        <Terminal />
 
-          {/* Meme Text */}
-          <p className="text-gray-400 text-base sm:text-lg max-w-md hover:text-gray-300 transition-colors duration-300">
-            <span className="inline-block animate-wiggle">
-              🐛
-            </span>{" "}
-            If it works, it's not a bug — it's a feature.
-          </p>
-        </div>
-
-        <div className="flex justify-center space-x-6 mb-12">
-          {[
-            { icon: Github, href: 'https://github.com/Koushikmondal06', label: 'GitHub' },
-            { icon: Linkedin, href: 'https://www.linkedin.com/in/koushik-mondal-011308329/', label: 'LinkedIn' },
-            { icon: Mail, href: '#contact', label: 'Email' },
-          ].map((social, index) => (
+        {/* Social Links */}
+        <div ref={socialsRef} className="flex justify-center gap-3 mt-8">
+          {socials.map((social) => (
             <a
               key={social.label}
               href={social.href}
-              className="p-3 rounded-full bg-slate-800/50 text-gray-400 hover:text-white hover:bg-emerald-600 transition-all duration-300 hover:scale-125 hover:rotate-12 animate-pulse-glow"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              target={social.href.startsWith('http') ? '_blank' : undefined}
+              rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="p-2.5 rounded-md bg-[#0d1117] border border-[#1a2332] text-[#4a5568] hover:text-[#22C55E] hover:border-[#22C55E]/40 transition-all duration-200 cursor-pointer"
+              aria-label={social.label}
             >
-              <social.icon size={24} />
+              <social.icon size={18} strokeWidth={1.5} />
             </a>
           ))}
         </div>
 
-        <button
-          onClick={scrollToAbout}
-          className="animate-bounce text-gray-400 hover:text-white transition-colors duration-300 hover:scale-110"
-        >
-          <ArrowDown size={32} />
-        </button>
+        {/* Hint text */}
+        <p className="text-center text-[11px] text-[#2d3748] font-mono mt-4">
+          try: ls · neofetch · cat readme · cd projects
+        </p>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#2d3748] text-[10px] font-mono">
+        <span>↓ scroll</span>
+        <div className="w-px h-6 bg-gradient-to-b from-[#22C55E]/30 to-transparent" />
       </div>
     </section>
   );
