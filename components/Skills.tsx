@@ -9,129 +9,144 @@ gsap.registerPlugin(ScrollTrigger);
 const Skills = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
-  const skills = [
-    { name: 'JavaScript', level: 80 },
-    { name: 'TypeScript', level: 75 },
-    { name: 'C', level: 75 },
-    { name: 'Java', level: 80 },
-    { name: 'React', level: 70 },
-    { name: 'HTML & CSS', level: 85 },
-    { name: 'Git', level: 75 },
-    { name: 'Node.js', level: 60 },
+  const skillCategories = [
+    {
+      title: "FRONTEND ENDOWMENT",
+      id: "01",
+      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GSAP", "Framer Motion", "HTML5", "CSS3"],
+      accent: "var(--accent)"
+    },
+    {
+      title: "BACKEND & SYSTEMS",
+      id: "02",
+      skills: ["Node.js", "Express", "C", "Java", "Python", "REST APIs", "GraphQL"],
+      accent: "#28c840"
+    },
+    {
+      title: "WEB3 & DECENTRALIZATION",
+      id: "03",
+      skills: ["Solidity", "Ethers.js", "Hardhat", "Smart Contracts", "Web3.js", "MetaMask"],
+      accent: "#febc2e"
+    },
+    {
+      title: "DEV TOOLS & DEPLOYMENT",
+      id: "04",
+      skills: ["Git", "GitHub", "Linux", "Docker", "Vercel", "npm/yarn", "VS Code"],
+      accent: "#00e5ff"
+    }
   ];
 
-  const tools = ['VS Code', 'Git', 'Chrome DevTools', 'Vercel', 'npm', 'Linux', 'Docker', 'Figma'];
-
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(headingRef.current,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
-        }
-      );
-
-      if (contentRef.current) {
-        gsap.fromTo(contentRef.current.children,
-          { opacity: 0, y: 20 },
+    let ctx = gsap.context(() => {
+      // Banner Animation
+      if (bannerRef.current) {
+        gsap.fromTo(bannerRef.current,
+          { opacity: 0, scaleY: 0, transformOrigin: "top" },
           {
-            opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out',
-            scrollTrigger: { trigger: contentRef.current, start: 'top 82%' },
+            opacity: 1, scaleY: 1, duration: 1, ease: 'expo.out',
+            scrollTrigger: {
+              trigger: bannerRef.current,
+              start: 'top 90%',
+              toggleActions: "play none none reverse",
+            },
           }
         );
       }
-    }, sectionRef);
 
+      // Parallax-like subtle float for Grid Elements
+      if (gridRef.current) {
+        // Individual Card entry
+        const cards = gsap.utils.toArray(gridRef.current.children);
+        cards.forEach((card: any, index) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 50, rotateX: -10, transformPerspective: 1000 },
+            {
+              opacity: 1, y: 0, rotateX: 0,
+              duration: 1,
+              ease: 'power3.out',
+              delay: index * 0.1, // Stagger effect based on index
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: "play reverse play reverse", // Re-animate on scroll up/down
+              }
+            }
+          );
+        });
+      }
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-28 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
-        <div ref={headingRef} className="mb-14" style={{ opacity: 0 }}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0d1117] border border-[#1a2332] rounded-lg mb-5">
-            <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-            <span className="text-sm text-[#8b949e] font-mono font-semibold">
-              cat ~/.config/skills.conf
-            </span>
+    <section id="skills" ref={sectionRef} className="relative bg-black pt-20 pb-40">
+
+      {/* MASSIVE ACCENT BANNER */}
+      <div ref={bannerRef} className="w-full bg-[var(--accent)] py-12 px-6 lg:px-12 flex flex-col md:flex-row items-start md:items-center justify-between z-10 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #000 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+
+        <div className="relative z-10 w-full flex flex-col md:flex-row md:items-end justify-between">
+          <div>
+            <p className="font-mono text-black font-bold tracking-widest uppercase text-sm mb-2">System Capabilities</p>
+            <h2 className="text-black font-sans font-black text-5xl md:text-7xl lg:text-8xl tracking-tighter uppercase leading-none">
+              Arsenal
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#c9d1d9]" style={{ fontFamily: 'var(--font-sans)' }}>
-            Tech Stack
-          </h2>
-          <p className="text-[#4a5568] text-base mt-3 font-mono font-medium">
-            runtime environment · production ready
-          </p>
+          <div className="mt-6 md:mt-0 font-mono text-black text-left md:text-right text-sm font-bold uppercase max-w-sm">
+            Engineered for high performance, scale, and uncompromising precision.
+          </div>
         </div>
+      </div>
 
-        <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Skills - Progress bars */}
-          <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl overflow-hidden" style={{ opacity: 0 }}>
-            <div className="flex items-center gap-3 px-5 py-3 bg-[#0a0e17] border-b border-[#1a2332]">
-              <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-              <span className="text-sm text-[#8b949e] font-mono font-semibold">languages & frameworks</span>
-            </div>
-            <div className="p-6 space-y-5">
-              {skills.map((skill) => (
-                <div key={skill.name} className="group">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-[#c9d1d9] font-mono font-bold group-hover:text-[#22C55E] transition-colors">
-                      {skill.name}
-                    </span>
-                    <span className="text-xs text-[#8b949e] font-mono font-semibold">
-                      [{skill.level}%]
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-[#0a0e17] rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: `${skill.level}%`,
-                        background: `linear-gradient(90deg, #22C55E ${skill.level - 30}%, #16A34A)`,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-32">
+        {/* Category Grid */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
+          {skillCategories.map((category) => (
+            <div key={category.id} className="relative group flex flex-col pt-8">
+              {/* Top border that expands */}
+              <div
+                className="absolute top-0 left-0 h-[2px] w-full bg-[#222]"
+              />
+              <div
+                className="absolute top-0 left-0 h-[2px] w-0 bg-[var(--accent)] group-hover:w-full transition-all duration-500 ease-out z-10"
+                style={{ backgroundColor: category.accent }}
+              />
 
-          {/* Tools & Info Panel */}
-          <div className="space-y-6">
-            {/* Tools */}
-            <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl overflow-hidden" style={{ opacity: 0 }}>
-              <div className="flex items-center gap-3 px-5 py-3 bg-[#0a0e17] border-b border-[#1a2332]">
-                <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-                <span className="text-sm text-[#8b949e] font-mono font-semibold">tools & platforms</span>
+              <div className="flex items-end gap-4 mb-8">
+                <span className="font-mono text-5xl lg:text-7xl font-light tracking-tighter" style={{ color: "rgba(255,255,255,0.05)" }}>
+                  {category.id}
+                </span>
+                <h3 className="font-sans text-2xl lg:text-4xl font-black uppercase tracking-tight text-white mb-2 group-hover:text-[var(--accent)] transition-colors duration-300" style={{ ':hover': { color: category.accent } } as any}>
+                  {category.title}
+                </h3>
               </div>
-              <div className="p-6 flex flex-wrap gap-3">
-                {tools.map((tool) => (
+
+              <div className="flex flex-wrap gap-3">
+                {category.skills.map((skill) => (
                   <span
-                    key={tool}
-                    className="px-4 py-2.5 text-sm font-mono font-semibold rounded-lg bg-[#0a0e17] border border-[#1a2332] text-[#8b949e] hover:text-[#22C55E] hover:border-[#22C55E]/30 transition-all duration-200 cursor-default"
+                    key={skill}
+                    className="font-mono text-[13px] md:text-[14px] font-bold uppercase tracking-widest px-5 py-3 border border-[#333] text-[#aaa] bg-[#050505] hover:bg-white hover:text-black hover:border-white transition-all duration-300 cursor-default"
                   >
-                    {tool}
+                    {skill}
                   </span>
                 ))}
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* System info panel */}
-            <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl overflow-hidden" style={{ opacity: 0 }}>
-              <div className="flex items-center gap-3 px-5 py-3 bg-[#0a0e17] border-b border-[#1a2332]">
-                <span className="w-2 h-2 rounded-full bg-[#febc2e]" />
-                <span className="text-sm text-[#8b949e] font-mono font-semibold">system.log</span>
-              </div>
-              <div className="p-6 font-mono text-sm space-y-2">
-                <p className="text-[#8b949e] font-medium"><span className="text-[#22C55E] font-bold">[INFO]</span> Currently learning: Web3 & Blockchain</p>
-                <p className="text-[#8b949e] font-medium"><span className="text-[#22C55E] font-bold">[INFO]</span> Focus: Full-stack development</p>
-                <p className="text-[#8b949e] font-medium"><span className="text-[#febc2e] font-bold">[WARN]</span> Coffee levels: critically low</p>
-                <p className="text-[#8b949e] font-medium"><span className="text-[#22C55E] font-bold">[INFO]</span> Status: Open to opportunities</p>
-              </div>
-            </div>
+        {/* Status footer for the section */}
+        <div className="mt-40 pt-8 border-t border-[#222] flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-[var(--accent)] rounded-none animate-pulse" />
+            <span className="font-mono text-[#777] uppercase tracking-widest text-xs font-bold">System Online / Ready for Deployment</span>
+          </div>
+          <div className="font-mono text-[#555] uppercase text-xs tracking-widest font-bold">
+            Always Adapting. Never Static.
           </div>
         </div>
       </div>

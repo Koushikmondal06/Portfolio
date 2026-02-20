@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { Mail, Github, Linkedin, Terminal, ArrowUpRight } from 'lucide-react';
+import { Mail, Github, Linkedin, ArrowUpRight, Terminal } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -15,99 +15,107 @@ const Contact = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headingRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 40 },
         {
-          opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
+          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: 'top 85%',
+            toggleActions: 'play reverse play reverse',
+          },
         }
       );
-
       if (contentRef.current) {
-        gsap.fromTo(contentRef.current.children,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: 'power2.out',
-            scrollTrigger: { trigger: contentRef.current, start: 'top 85%' },
-          }
-        );
+        const cards = gsap.utils.toArray(contentRef.current.children);
+        cards.forEach((card: any, index) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 40, scale: 0.98 },
+            {
+              opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out',
+              delay: index * 0.1,
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play reverse play reverse',
+              },
+            }
+          );
+        });
       }
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   const links = [
-    { icon: Mail, href: 'mailto:koushikmondal0069@gmail.com', label: 'Email', text: 'koushikmondal0069@gmail.com', desc: 'Send me a message' },
-    { icon: Github, href: 'https://github.com/Koushikmondal06', label: 'GitHub', text: 'github.com/Koushikmondal06', desc: 'Check out my repos' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/koushik-mondal-011308329/', label: 'LinkedIn', text: 'Koushik Mondal', desc: 'Connect with me' },
+    { icon: Mail, href: 'mailto:koushikmondal0069@gmail.com', label: 'Email', text: 'koushikmondal0069@gmail.com', desc: 'Drop me a message' },
+    { icon: Github, href: 'https://github.com/Koushikmondal06', label: 'GitHub', text: 'Koushikmondal06', desc: 'View my repositories' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/koushik-mondal-011308329/', label: 'LinkedIn', text: 'Koushik Mondal', desc: 'Connect professionally' },
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="py-28 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
-        <div ref={headingRef} className="mb-14" style={{ opacity: 0 }}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0d1117] border border-[#1a2332] rounded-lg mb-5">
-            <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-            <span className="text-sm text-[#8b949e] font-mono font-semibold">
-              cat ~/.config/contact.md
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#c9d1d9]" style={{ fontFamily: 'var(--font-sans)' }}>
-            Get In Touch
+    <section id="contact" ref={sectionRef} className="py-32 relative">
+      <div className="section-divider max-w-7xl mx-auto mb-32" />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Heading */}
+        <div ref={headingRef} className="mb-16" style={{ opacity: 0 }}>
+          <p className="mono-label mb-4">Get In Touch</p>
+          <h2 className="giant-heading">
+            Con<span className="text-[var(--accent)]">tact</span>
           </h2>
-          <p className="text-[#8b949e] text-lg mt-3 font-medium max-w-lg">
-            I'm always open to new opportunities, collaborations, and interesting conversations. Let's build something together.
+          <p className="text-[#555] text-lg mt-6 max-w-lg leading-relaxed">
+            I'm always open to new opportunities and interesting conversations.
+            Let's build something great together.
           </p>
         </div>
 
-        <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl">
+        {/* Contact cards */}
+        <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
           {links.map((link) => (
             <a
               key={link.label}
               href={link.href}
               target={link.href.startsWith('http') ? '_blank' : undefined}
               rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="bg-[#0d1117] border border-[#1a2332] rounded-xl p-6 hover:border-[#22C55E]/40 transition-all duration-300 group cursor-pointer hover:shadow-lg hover:shadow-[#22C55E]/5 flex flex-col"
+              className="wf-card p-6 group cursor-pointer flex flex-col"
               style={{ opacity: 0 }}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className="p-3 rounded-lg bg-[#0a0e17] text-[#4a5568] group-hover:text-[#22C55E] group-hover:bg-[#22C55E]/10 transition-all duration-300">
+              <div className="flex items-center justify-between mb-5">
+                <div className="p-3 rounded-lg bg-[#111] text-[#555] group-hover:text-[var(--accent)] group-hover:bg-[var(--accent-dim)] transition-all duration-300">
                   <link.icon size={22} strokeWidth={1.5} />
                 </div>
-                <ArrowUpRight size={16} className="text-[#2d3748] group-hover:text-[#22C55E] transition-colors" />
+                <ArrowUpRight size={16} className="text-[#222] group-hover:text-[var(--accent)] transition-colors" />
               </div>
-              <h3 className="text-lg font-bold text-[#c9d1d9] mb-1 font-mono group-hover:text-[#22C55E] transition-colors">
+              <h3 className="text-lg font-bold text-white group-hover:text-[var(--accent)] transition-colors mb-1">
                 {link.label}
               </h3>
-              <p className="text-xs text-[#4a5568] font-mono mb-3 font-medium">
-                {link.desc}
-              </p>
-              <p className="text-sm text-[#8b949e] font-mono font-semibold mt-auto truncate">
-                {link.text}
-              </p>
+              <p className="text-[12px] text-[#444] font-mono mb-3">{link.desc}</p>
+              <p className="text-[13px] text-[#666] font-mono mt-auto truncate">{link.text}</p>
             </a>
           ))}
         </div>
 
-        {/* Terminal-style CTA */}
-        <div className="mt-12 max-w-4xl">
-          <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl p-6 flex items-center gap-4" style={{ opacity: 0 }}>
-            <Terminal size={20} className="text-[#22C55E] flex-shrink-0" />
-            <p className="text-sm text-[#8b949e] font-mono font-medium">
-              <span className="text-[#22C55E] font-bold">$</span> echo "Let's collaborate!" | mail -s "Hello" koushik
-            </p>
-          </div>
+        {/* CTA */}
+        <div className="wf-card p-6 flex items-center gap-4" style={{ opacity: 0 }}>
+          <Terminal size={20} className="text-[var(--accent)] flex-shrink-0" />
+          <p className="text-[14px] text-[#555] font-mono">
+            <span className="text-[var(--accent)] font-bold">$</span> echo "Let's collaborate!" | mail koushik
+          </p>
         </div>
 
         {/* Footer */}
-        <div className="mt-24 pt-8 border-t border-[#1a2332]">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <p className="text-sm text-[#4a5568] font-mono font-medium">
-              © {new Date().getFullYear()} koushik@portfolio · PID 1 · uptime ∞
-            </p>
-            <p className="text-sm text-[#4a5568] font-mono font-medium">
-              built with next.js · powered by caffeine ☕
+        <div className="mt-32 pt-8 border-t border-[#1a1a1a]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 rounded-md bg-[var(--accent)] flex items-center justify-center">
+                <span className="text-white font-bold text-[10px]">K</span>
+              </div>
+              <span className="text-[13px] text-[#444] font-mono">
+                © {new Date().getFullYear()} Koushik Mondal
+              </span>
+            </div>
+            <p className="text-[13px] text-[#333] font-mono">
+              Built with Next.js · Powered by ☕
             </p>
           </div>
         </div>

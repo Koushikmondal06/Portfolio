@@ -1,80 +1,79 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import gsap from 'gsap';
 import Terminal from '@/components/Terminal';
 
 const Hero = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const socialsRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const scrollFadeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(headerRef.current,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+      // Intro animations
+      gsap.fromTo(headingRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+      );
+      gsap.fromTo(subtitleRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: 'power3.out' }
       );
 
-      gsap.fromTo(socialsRef.current?.children || [],
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, delay: 1, ease: 'power2.out' }
-      );
+      // Fade out on scroll down
+      if (scrollFadeRef.current) {
+        gsap.to(scrollFadeRef.current, {
+          y: -50,
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom center",
+            scrub: true,
+          }
+        });
+      }
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
-  const socials = [
-    { icon: Github, href: 'https://github.com/Koushikmondal06', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/koushik-mondal-011308329/', label: 'LinkedIn' },
-    { icon: Mail, href: '#contact', label: 'Email' },
-  ];
-
   return (
-    <section
-      id="home"
-      ref={sectionRef}
-      className="min-h-screen flex flex-col items-center justify-center relative px-4 sm:px-6"
-    >
-      <div className="relative z-10 w-full max-w-3xl mx-auto">
-        {/* Header info */}
-        <div ref={headerRef} className="mb-6 text-center" style={{ opacity: 0 }}>
-          <p className="text-[11px] text-[#4a5568] font-mono mb-1">
-            user@koushik-portfolio · bash · 120×40
+    <section id="home" ref={sectionRef} className="min-h-screen flex flex-col justify-center relative pt-16 px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto w-full">
+        {/* Intro elements mapped here for scroll fade logic */}
+        <div ref={scrollFadeRef}>
+          {/* Giant heading */}
+          <div ref={headingRef} className="mb-8" style={{ opacity: 0 }}>
+            <p className="mono-label mb-4">CS Student · Web Developer · Problem Solver</p>
+            <h1 className="giant-heading">
+              Koushik<br />
+              <span className="text-[var(--accent)]">Mondal</span>
+            </h1>
+          </div>
+
+          <p ref={subtitleRef} className="text-[#777] text-lg max-w-xl mb-12 leading-relaxed" style={{ opacity: 0 }}>
+            I build innovative digital experiences with modern web technologies.
+            Currently exploring Web3, blockchain, and creative frontend development.
           </p>
         </div>
 
         {/* Terminal */}
         <Terminal />
 
-        {/* Social Links */}
-        <div ref={socialsRef} className="flex justify-center gap-3 mt-8">
-          {socials.map((social) => (
-            <a
-              key={social.label}
-              href={social.href}
-              target={social.href.startsWith('http') ? '_blank' : undefined}
-              rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="p-2.5 rounded-md bg-[#0d1117] border border-[#1a2332] text-[#4a5568] hover:text-[#22C55E] hover:border-[#22C55E]/40 transition-all duration-200 cursor-pointer"
-              aria-label={social.label}
-            >
-              <social.icon size={18} strokeWidth={1.5} />
-            </a>
-          ))}
+        {/* Scroll cue */}
+        <div className="mt-16 flex justify-center">
+          <button
+            onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })}
+            className="flex flex-col items-center gap-2 text-[#333] hover:text-[var(--accent)] transition-colors cursor-pointer group"
+          >
+            <span className="text-[11px] font-mono uppercase tracking-widest">Scroll</span>
+            <ArrowDown size={16} className="animate-bounce" />
+          </button>
         </div>
-
-        {/* Hint text */}
-        <p className="text-center text-[11px] text-[#2d3748] font-mono mt-4">
-          try: ls · neofetch · cat readme · cd projects
-        </p>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#2d3748] text-[10px] font-mono">
-        <span>↓ scroll</span>
-        <div className="w-px h-6 bg-gradient-to-b from-[#22C55E]/30 to-transparent" />
       </div>
     </section>
   );

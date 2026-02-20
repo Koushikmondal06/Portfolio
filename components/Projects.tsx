@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { ExternalLink, Github, FolderOpen } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -15,113 +15,128 @@ const Projects = () => {
   const projects = [
     {
       title: 'CrowdX',
-      description: 'Decentralized crowdfunding platform on Ethereum Sepolia with trustless security, smart contract-locked funds, MetaMask integration, and real-time funding progress. Features modern dark theme with glassmorphism effects.',
-      technologies: ['Next.js', 'Solidity', 'Ethers.js', 'Tailwind CSS', 'Hardhat'],
+      description: 'Decentralized crowdfunding on Ethereum Sepolia — trustless fund locking, MetaMask integration, real-time progress tracking.',
+      technologies: ['Next.js', 'Solidity', 'Ethers.js', 'Hardhat'],
       github: 'https://github.com/Koushikmondal06/CrowdX',
       demo: 'https://crowdx.002014.xyz/',
+      featured: true,
     },
     {
       title: 'BlockOff',
-      description: 'Revolutionary mesh networking protocol enabling blockchain transactions offline via Bluetooth Low Energy (BLE). Supports multi-chain EVM networks with packet fragmentation and peer-to-peer relay.',
-      technologies: ['React', 'Blockchain', 'BLE', 'Web3', 'TypeScript'],
+      description: 'Offline blockchain transactions via Bluetooth Low Energy mesh networking. Multi-chain EVM support with P2P relay.',
+      technologies: ['React', 'Blockchain', 'BLE', 'TypeScript'],
       github: 'https://github.com/HimanshuM685/BlockOff',
       demo: 'https://blockoff.007575.xyz/',
+      featured: true,
     },
     {
       title: 'Eco-Tracker',
-      description: 'Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features. Built with a modern full-stack architecture.',
-      technologies: ['React', 'Node.js', 'Tailwind CSS', 'MongoDB', 'Express'],
+      description: 'Collaborative task management with real-time updates, drag-and-drop, and team collaboration features.',
+      technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
       github: 'https://github.com/HimanshuM685/EcoTracker.git',
       demo: 'https://eco-test-theta.vercel.app/',
+      featured: false,
     },
     {
       title: 'Music Website',
-      description: 'A platform for discovering and streaming music, featuring curated playlists, artist profiles, and social sharing capabilities with a responsive interface.',
-      technologies: ['HTML', 'CSS', 'JavaScript', 'Tailwind CSS'],
+      description: 'Music discovery and streaming platform with playlists, artist profiles, and responsive design.',
+      technologies: ['HTML', 'CSS', 'JavaScript'],
       github: 'https://github.com/Koushikmondal06/Music-website.git',
       demo: '#',
+      featured: false,
     },
     {
-      title: 'To-Do List App',
-      description: 'A modern to-do list application with user authentication, task categorization, priority levels, and a fully responsive design with dark mode support.',
-      technologies: ['React', 'JavaScript', 'Node.js', 'MongoDB'],
+      title: 'To-Do List',
+      description: 'Modern to-do app with authentication, task categorization, and dark mode.',
+      technologies: ['React', 'Node.js', 'MongoDB'],
       github: 'https://github.com/Koushikmondal06/to-do-list.git',
       demo: '#',
+      featured: false,
     },
     {
       title: 'Portfolio',
-      description: 'This interactive terminal-style portfolio website. Features an embedded Linux terminal for navigation, cursor-reactive background animations, and GSAP-powered scroll effects.',
-      technologies: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS', 'GSAP'],
+      description: 'This interactive terminal-style portfolio with cursor-reactive animations and GSAP effects.',
+      technologies: ['React', 'TypeScript', 'Next.js', 'GSAP'],
       github: 'https://github.com/Koushikmondal06/Portfolio.git',
       demo: '#',
+      featured: false,
     },
   ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headingRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 40 },
         {
-          opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
+          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: 'top 85%',
+            toggleActions: 'play reverse play reverse',
+          },
         }
       );
-
       if (gridRef.current) {
-        gsap.fromTo(gridRef.current.children,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
-            scrollTrigger: { trigger: gridRef.current, start: 'top 82%' },
-          }
-        );
+        const cards = gsap.utils.toArray(gridRef.current.children);
+        cards.forEach((card: any, index) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 50, scale: 0.98 },
+            {
+              opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out',
+              delay: index * 0.1,
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play reverse play reverse',
+              },
+            }
+          );
+        });
       }
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="projects" ref={sectionRef} className="py-28 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Heading */}
-        <div ref={headingRef} className="mb-14" style={{ opacity: 0 }}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0d1117] border border-[#1a2332] rounded-lg mb-5">
-            <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
-            <span className="text-sm text-[#8b949e] font-mono font-semibold">
-              ls -la ~/projects/
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#c9d1d9]" style={{ fontFamily: 'var(--font-sans)' }}>
-            Featured Projects
+    <section id="projects" ref={sectionRef} className="py-32 relative">
+      {/* Section divider */}
+      <div className="section-divider max-w-7xl mx-auto mb-32" />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Heading */}
+        <div ref={headingRef} className="mb-16" style={{ opacity: 0 }}>
+          <p className="mono-label mb-4">Selected Work</p>
+          <h2 className="giant-heading text-white">
+            Pro<span className="text-[var(--accent)]">jects</span>
           </h2>
-          <p className="text-[#4a5568] text-base mt-3 font-mono font-medium">
-            total {projects.length} · drwxr-xr-x koushik developers
-          </p>
         </div>
 
-        {/* Project Grid */}
+        {/* Grid */}
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {projects.map((project) => (
             <div
               key={project.title}
-              className="bg-[#0d1117] border border-[#1a2332] rounded-xl overflow-hidden hover:border-[#22C55E]/40 transition-all duration-300 group cursor-pointer hover:shadow-lg hover:shadow-[#22C55E]/5"
+              className={`wf-card overflow-hidden group cursor-pointer ${project.featured ? 'md:col-span-1' : ''
+                }`}
               style={{ opacity: 0 }}
             >
-              {/* File header */}
-              <div className="flex items-center gap-3 px-5 py-3 bg-[#0a0e17] border-b border-[#1a2332]">
-                <FolderOpen size={16} className="text-[#22C55E]" strokeWidth={1.5} />
-                <span className="text-sm text-[#8b949e] font-mono font-semibold group-hover:text-[#c9d1d9] transition-colors">
-                  {project.title.toLowerCase().replace(/\s+/g, '-')}/
-                </span>
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[#1a1a1a]">
+                <div className="flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full ${project.featured ? 'bg-[var(--accent)]' : 'bg-[#333]'}`} />
+                  <span className="text-[12px] text-[#555] font-mono font-medium uppercase tracking-wide">
+                    {project.featured ? 'Featured' : 'Project'}
+                  </span>
+                </div>
+                <ArrowUpRight size={16} className="text-[#333] group-hover:text-[var(--accent)] transition-colors" />
               </div>
 
-              {/* Content */}
+              {/* Body */}
               <div className="p-6">
-                <h3 className="text-lg font-bold text-[#c9d1d9] group-hover:text-[#22C55E] transition-colors mb-3" style={{ fontFamily: 'var(--font-mono)' }}>
+                <h3 className="text-xl font-bold text-white group-hover:text-[var(--accent)] transition-colors mb-3">
                   {project.title}
                 </h3>
-                <p className="text-sm text-[#8b949e] leading-relaxed mb-5 font-medium">
+                <p className="text-[14px] text-[#777] leading-relaxed mb-5">
                   {project.description}
                 </p>
 
@@ -130,7 +145,7 @@ const Projects = () => {
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 text-xs rounded-md bg-[#0a0e17] text-[#8b949e] border border-[#1a2332] font-mono font-semibold"
+                      className="px-2.5 py-1 text-[11px] font-mono font-medium rounded-md bg-[#111] border border-[#1a1a1a] text-[#666]"
                     >
                       {tech}
                     </span>
@@ -138,23 +153,23 @@ const Projects = () => {
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-4 pt-4 border-t border-[#1a2332]">
+                <div className="flex gap-4 pt-4 border-t border-[#1a1a1a]">
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-[#8b949e] hover:text-[#22C55E] transition-colors cursor-pointer font-mono font-semibold"
+                    className="flex items-center gap-2 text-[13px] text-[#555] hover:text-[var(--accent)] transition-colors font-mono font-medium cursor-pointer"
                   >
-                    <Github size={16} /> source
+                    <Github size={15} /> Source
                   </a>
                   {project.demo !== '#' && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-[#8b949e] hover:text-[#22C55E] transition-colors cursor-pointer font-mono font-semibold"
+                      className="flex items-center gap-2 text-[13px] text-[#555] hover:text-[var(--accent)] transition-colors font-mono font-medium cursor-pointer"
                     >
-                      <ExternalLink size={16} /> live demo
+                      <ExternalLink size={15} /> Live
                     </a>
                   )}
                 </div>

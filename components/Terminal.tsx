@@ -10,74 +10,62 @@ interface TerminalLine {
 
 const SECTIONS = ['home', 'projects', 'skills', 'contact'];
 
-const ASCII_ART = `  _  __               _     _ _    
- | |/ /___  _   _ ___| |__ (_) | __
- | ' // _ \\| | | / __| '_ \\| | |/ /
- | . \\ (_) | |_| \\__ \\ | | | |   < 
- |_|\\_\\___/ \\__,_|___/_| |_|_|_|\\_\\`;
-
-const HELP_TEXT = `  COMMAND        DESCRIPTION
-  ───────        ───────────
-  ls             list sections
-  cd <section>   navigate to section
-  cat readme     show info about me
-  neofetch       system info
-  help           show this help
-  clear          clear terminal`;
+const HELP_TEXT = `  COMMAND         DESCRIPTION
+  ───────         ───────────
+  ls              list sections
+  cd <section>    navigate to section
+  cat readme      about me
+  neofetch        system info
+  help            show this help
+  clear           clear terminal`;
 
 const NEOFETCH = `  koushik@portfolio
   ─────────────────
-  OS:      Portfolio Linux x86_64
-  Host:    localhost:3000
-  Shell:   bash 5.1.16
-  Stack:   React / Next.js / TypeScript
-  Theme:   Terminal Green [#22C55E]
+  OS:      Portfolio v2.0
+  Host:    002014.xyz
+  Shell:   bash 5.1
+  Stack:   Next.js / TypeScript / Solidity / Ethers.js
+  Theme:   Electric Purple [#6c44fc]
   Font:    JetBrains Mono
   Uptime:  always online`;
 
-const CAT_README = `  # Koushik Mondal
+const CAT_README = `  ┌─────────────────────────────────┐
+  │  KOUSHIK MONDAL                │
+  │  CS Student & Web Developer    │
+  └─────────────────────────────────┘
   
-  CS Student & Web Developer
-  
-  > Passionate about building innovative
-  > digital solutions with modern tech.
-  
-  Languages: JavaScript, TypeScript, C, Java, Python
+  Languages: JavaScript, TypeScript, C, Java
   Frontend:  React, Next.js, Tailwind CSS
   Backend:   Node.js, Express, MongoDB
   Web3:      Solidity, Ethers.js, Hardhat
   
-  GitHub:    github.com/Koushikmondal06
-  LinkedIn:  linkedin.com/in/koushik-mondal-011308329
-  Email:     koushikmondal0069@gmail.com`;
+  github.com/Koushikmondal06
+  koushikmondal0069@gmail.com`;
 
 const Terminal = () => {
     const [lines, setLines] = useState<TerminalLine[]>([
-        { type: 'info', content: ASCII_ART },
-        { type: 'success', content: '  Welcome! Type "help" for available commands.\n' },
+        { type: 'info', content: '  ▸ koushik@portfolio — interactive terminal v2.0' },
+        { type: 'success', content: '  Type "help" for commands.\n' },
     ]);
     const [input, setInput] = useState('');
     const [history, setHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
-    const [isAutoTyping, setIsAutoTyping] = useState(true);
     const inputRef = useRef<HTMLInputElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const hasAutoTyped = useRef(false);
 
-    // Auto-scroll to bottom
     useEffect(() => {
         if (bodyRef.current) {
             bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
         }
     }, [lines]);
 
-    // GSAP entrance
     useEffect(() => {
         if (containerRef.current) {
             gsap.fromTo(containerRef.current,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: 'power2.out' }
+                { opacity: 0, y: 30, scale: 0.98 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.3, ease: 'power3.out' }
             );
         }
     }, []);
@@ -88,16 +76,15 @@ const Terminal = () => {
         hasAutoTyped.current = true;
 
         const autoType = async () => {
-            await new Promise(r => setTimeout(r, 1000));
-            const cmd = 'ls';
+            await new Promise(r => setTimeout(r, 1200));
+            const cmd = 'neofetch';
             for (let i = 0; i <= cmd.length; i++) {
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 80));
                 setInput(cmd.substring(0, i));
             }
-            await new Promise(r => setTimeout(r, 300));
+            await new Promise(r => setTimeout(r, 400));
             executeCommand(cmd);
             setInput('');
-            setIsAutoTyping(false);
         };
         autoType();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,28 +102,28 @@ const Terminal = () => {
         const arg = parts.slice(1).join(' ');
 
         const newLines: TerminalLine[] = [
-            { type: 'input', content: `koushik@portfolio:~$ ${cmd}` },
+            { type: 'input', content: `  $ ${cmd}` },
         ];
 
         switch (command) {
             case 'ls':
                 newLines.push({
                     type: 'output',
-                    content: SECTIONS.map(s => `  drwxr-xr-x  ${s}/`).join('\n'),
+                    content: SECTIONS.map(s => `  📁 ${s}/`).join('\n'),
                 });
                 break;
 
             case 'cd': {
                 if (!arg) {
-                    newLines.push({ type: 'error', content: '  bash: cd: missing operand' });
+                    newLines.push({ type: 'error', content: '  ✗ missing argument' });
                     break;
                 }
                 const match = SECTIONS.find(s => s === arg || s.startsWith(arg));
                 if (match) {
-                    newLines.push({ type: 'success', content: `  → navigating to /${match}` });
+                    newLines.push({ type: 'success', content: `  → ${match}/` });
                     setTimeout(() => scrollToSection(match), 300);
                 } else {
-                    newLines.push({ type: 'error', content: `  bash: cd: ${arg}: No such directory` });
+                    newLines.push({ type: 'error', content: `  ✗ "${arg}" not found` });
                 }
                 break;
             }
@@ -145,7 +132,7 @@ const Terminal = () => {
                 if (arg === 'readme' || arg === 'readme.md') {
                     newLines.push({ type: 'output', content: CAT_README });
                 } else {
-                    newLines.push({ type: 'error', content: `  cat: ${arg || '???'}: No such file` });
+                    newLines.push({ type: 'error', content: `  ✗ "${arg || '???'}" not found` });
                 }
                 break;
 
@@ -162,7 +149,7 @@ const Terminal = () => {
                 return;
 
             case 'pwd':
-                newLines.push({ type: 'output', content: '  /home/koushik/portfolio' });
+                newLines.push({ type: 'output', content: '  ~/portfolio' });
                 break;
 
             case 'whoami':
@@ -174,12 +161,12 @@ const Terminal = () => {
                 return;
 
             default: {
-                const sectionMatch = SECTIONS.find(s => s === command || s.startsWith(command));
+                const sectionMatch = SECTIONS.find(s => s === command);
                 if (sectionMatch) {
-                    newLines.push({ type: 'success', content: `  → navigating to /${sectionMatch}` });
+                    newLines.push({ type: 'success', content: `  → ${sectionMatch}/` });
                     setTimeout(() => scrollToSection(sectionMatch), 300);
                 } else {
-                    newLines.push({ type: 'error', content: `  bash: ${command}: command not found` });
+                    newLines.push({ type: 'error', content: `  ✗ command not found: ${command}` });
                 }
             }
         }
@@ -199,26 +186,24 @@ const Terminal = () => {
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             if (historyIndex < history.length - 1) {
-                const newIndex = historyIndex + 1;
-                setHistoryIndex(newIndex);
-                setInput(history[newIndex]);
+                const idx = historyIndex + 1;
+                setHistoryIndex(idx);
+                setInput(history[idx]);
             }
         } else if (e.key === 'ArrowDown') {
             e.preventDefault();
             if (historyIndex > 0) {
-                const newIndex = historyIndex - 1;
-                setHistoryIndex(newIndex);
-                setInput(history[newIndex]);
+                const idx = historyIndex - 1;
+                setHistoryIndex(idx);
+                setInput(history[idx]);
             } else {
                 setHistoryIndex(-1);
                 setInput('');
             }
         } else if (e.key === 'Tab') {
             e.preventDefault();
-            // Tab completion
-            const partial = input.trim().toLowerCase();
             const commands = ['ls', 'cd', 'cat', 'neofetch', 'help', 'clear', 'pwd', 'whoami'];
-            const match = commands.find(c => c.startsWith(partial));
+            const match = commands.find(c => c.startsWith(input.trim().toLowerCase()));
             if (match) setInput(match);
         }
     };
@@ -226,55 +211,55 @@ const Terminal = () => {
     return (
         <div
             ref={containerRef}
-            className="w-full max-w-2xl mx-auto relative"
+            className="w-full max-w-2xl mx-auto"
             style={{ opacity: 0 }}
         >
-            {/* Terminal window */}
-            <div className="bg-[#0a0e17] border border-[#1a2332] rounded-lg overflow-hidden shadow-2xl shadow-black/50">
+            <div className="wf-card overflow-hidden">
                 {/* Title bar */}
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-[#0d1117] border-b border-[#1a2332]">
-                    <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                    <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                    <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-                    <span className="ml-3 text-[13px] text-[#4a5568] font-mono select-none font-medium">
-                        koushik@portfolio: ~
+                <div className="flex items-center justify-between px-5 py-3 bg-[#0a0a0a] border-b border-[#1a1a1a]">
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                        <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                        <div className="w-3 h-3 rounded-full bg-[#28c840]" />
+                    </div>
+                    <span className="text-[11px] text-[#444] font-mono">
+                        terminal — koushik@portfolio
                     </span>
+                    <div className="w-16" />
                 </div>
 
-                {/* Terminal body */}
+                {/* Body */}
                 <div
                     ref={bodyRef}
-                    className="px-5 py-4 min-h-[240px] max-h-[360px] overflow-y-auto font-mono text-[15px] leading-relaxed cursor-text font-medium"
+                    className="px-5 py-4 min-h-[200px] max-h-[320px] overflow-y-auto font-mono text-[14px] leading-relaxed cursor-text"
                     onClick={() => inputRef.current?.focus()}
-                    style={{ scrollbarWidth: 'thin', scrollbarColor: '#1a2332 transparent' }}
+                    style={{ scrollbarWidth: 'thin', scrollbarColor: '#1a1a1a transparent' }}
                 >
                     {lines.map((line, i) => (
                         <div
                             key={i}
                             className={
-                                line.type === 'input' ? 'text-[#c9d1d9] font-semibold' :
-                                    line.type === 'success' ? 'text-[#22C55E] font-semibold' :
-                                        line.type === 'error' ? 'text-[#f87171] font-semibold' :
-                                            line.type === 'info' ? 'text-[#22C55E] font-bold' :
-                                                'text-[#8b949e] font-medium'
+                                line.type === 'input' ? 'text-white font-semibold' :
+                                    line.type === 'success' ? 'text-[var(--accent-light)]' :
+                                        line.type === 'error' ? 'text-[#f87171]' :
+                                            line.type === 'info' ? 'text-[var(--accent)] font-bold' :
+                                                'text-[#777]'
                             }
                         >
-                            <pre className="whitespace-pre-wrap text-[15px]">{line.content}</pre>
+                            <pre className="whitespace-pre-wrap text-[14px]">{line.content}</pre>
                         </div>
                     ))}
 
-                    {/* Input line */}
+                    {/* Input */}
                     <form onSubmit={handleSubmit} className="flex items-center mt-1">
-                        <span className="text-[#22C55E] font-bold mr-2 whitespace-nowrap text-[15px]">
-                            koushik@portfolio<span className="text-[#8b949e]">:</span><span className="text-[#58a6ff]">~</span><span className="text-[#8b949e]">$</span>
-                        </span>
+                        <span className="text-[var(--accent)] font-bold mr-2 text-[14px]">$</span>
                         <input
                             ref={inputRef}
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="flex-1 bg-transparent border-none outline-none text-[#c9d1d9] font-mono text-[15px] font-semibold caret-[#22C55E]"
+                            className="flex-1 bg-transparent border-none outline-none text-white font-mono text-[14px] font-medium caret-[var(--accent)]"
                             autoFocus
                             spellCheck={false}
                             autoComplete="off"

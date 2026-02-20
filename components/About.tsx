@@ -40,31 +40,47 @@ const About = () => {
     const ctx = gsap.context(() => {
       // Heading reveal
       gsap.fromTo(headingRef.current,
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 40 },
         {
-          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
-          scrollTrigger: { trigger: headingRef.current, start: 'top 85%' },
+          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: 'top 85%',
+            toggleActions: 'play reverse play reverse',
+          },
         }
       );
 
       // Content reveal
       gsap.fromTo(contentRef.current,
-        { opacity: 0, x: -30 },
+        { opacity: 0, x: -40 },
         {
-          opacity: 1, x: 0, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: contentRef.current, start: 'top 80%' },
+          opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: 'top 80%',
+            toggleActions: 'play reverse play reverse',
+          },
         }
       );
 
       // Cards stagger
       if (cardsRef.current) {
-        gsap.fromTo(cardsRef.current.children,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: cardsRef.current, start: 'top 80%' },
-          }
-        );
+        const cards = gsap.utils.toArray(cardsRef.current.children);
+        cards.forEach((card: any, index) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 40, scale: 0.95 },
+            {
+              opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out',
+              delay: index * 0.1,
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play reverse play reverse',
+              },
+            }
+          );
+        });
       }
     }, sectionRef);
 
