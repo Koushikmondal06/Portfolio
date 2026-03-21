@@ -8,13 +8,13 @@ import Skills from '@/components/Skills';
 import Contact from '@/components/Contact';
 
 // Dynamic imports for heavy client-only components
-const CursorBackground = dynamic(() => import('@/components/CursorBackground'), { ssr: false });
+const VantaBackground = dynamic(() => import('@/components/VantaBackground'), { ssr: false });
 
 export default function Home() {
   return (
     <main className="min-h-screen relative">
-      {/* Cursor-oriented background animation */}
-      <CursorBackground />
+      {/* Vanta Globe background animation */}
+      <VantaBackground />
 
       {/* Content */}
       <div className="relative z-10">

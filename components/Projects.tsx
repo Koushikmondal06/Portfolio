@@ -14,6 +14,14 @@ const Projects = () => {
 
   const projects = [
     {
+      title: 'PIGEON',
+      description: 'SMS-based crypto wallet backend with AI intent detection (Gemini) and Algorand onboarding via on-chain smart contracts.',
+      technologies: ['Node.js', 'Algorand', 'Gemini AI', 'Smart Contract'],
+      github: 'https://github.com/Koushikmondal06/PIGEON.git',
+      demo: 'https://pigeon.007575.xyz/',
+      featured: true,
+    },
+    {
       title: 'CrowdX',
       description: 'Decentralized crowdfunding on Ethereum Sepolia — trustless fund locking, MetaMask integration, real-time progress tracking.',
       technologies: ['Next.js', 'Solidity', 'Ethers.js', 'Hardhat'],
