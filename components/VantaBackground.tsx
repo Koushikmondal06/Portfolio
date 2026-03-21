@@ -27,7 +27,8 @@ const VantaBackground = () => {
                     scale: 1.00,
                     scaleMobile: 1.00,
                     color: 0x2e15a7,
-                    backgroundColor: 0x111116
+                    backgroundColor: 0x111116,
+                    backgroundAlpha: 0.0
                 })
             );
         }
@@ -61,7 +62,7 @@ const VantaBackground = () => {
             <div
                 ref={vantaRef}
                 className="fixed inset-0 z-0 pointer-events-none"
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', opacity: 0.6 }}
             />
         </>
     );
