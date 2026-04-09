@@ -16,6 +16,10 @@ const HELP_TEXT = `  COMMAND         DESCRIPTION
   cd <section>    navigate to section
   cat readme      about me
   neofetch        system info
+  ping recruiter  try your luck
+  git status      check career status
+  sudo <cmd>      attempt root access
+  why             the real question
   help            show this help
   clear           clear terminal`;
 
@@ -156,6 +160,41 @@ const Terminal = () => {
                 newLines.push({ type: 'output', content: '  koushik' });
                 break;
 
+            case 'ping':
+                if (arg === 'recruiter') {
+                    newLines.push({ type: 'output', content: '  Pinging recruiter...' });
+                    newLines.push({ type: 'error', content: '  Request timed out.' });
+                    newLines.push({ type: 'error', content: '  Try again with better projects.' });
+                } else {
+                    newLines.push({ type: 'error', content: `  ✗ ping: ${arg || 'unknown host'}` });
+                }
+                break;
+
+            case 'git':
+                if (arg === 'status') {
+                    newLines.push({ type: 'success', content: '  On branch main' });
+                    newLines.push({ type: 'success', content: '  Your career is up to date with origin/success' });
+                    newLines.push({ type: 'output', content: '\n  nothing to commit, working tree clean' });
+                } else {
+                    newLines.push({ type: 'error', content: `  ✗ git: '${arg || ''}' is not a git command` });
+                }
+                break;
+
+            case 'sudo':
+                if (arg === 'rm -rf /') {
+                    newLines.push({ type: 'error', content: '  Nice.' });
+                    newLines.push({ type: 'error', content: '  You just destroyed my imaginary filesystem.' });
+                    newLines.push({ type: 'error', content: '  Fuck You Bitch .....' });
+                } else {
+                    newLines.push({ type: 'error', content: '  Nice try.' });
+                    newLines.push({ type: 'error', content: '  You don\'t have that kind of power here.' });
+                }
+                break;
+
+            case 'why':
+                newLines.push({ type: 'output', content: '  Because you chose computer science.' });
+                break;
+
             case '':
                 setLines(prev => [...prev, ...newLines]);
                 return;
@@ -202,7 +241,7 @@ const Terminal = () => {
             }
         } else if (e.key === 'Tab') {
             e.preventDefault();
-            const commands = ['ls', 'cd', 'cat', 'neofetch', 'help', 'clear', 'pwd', 'whoami'];
+            const commands = ['ls', 'cd', 'cat', 'neofetch', 'help', 'clear', 'pwd', 'whoami', 'ping', 'git', 'sudo', 'why'];
             const match = commands.find(c => c.startsWith(input.trim().toLowerCase()));
             if (match) setInput(match);
         }
