@@ -38,6 +38,14 @@ const Projects = () => {
       featured: true,
     },
     {
+      title: 'Comet',
+      description: 'AI-powered commit message generator that reads staged Git diffs and generates clean Conventional Commits using Gemini, OpenAI, Claude, or any OpenAI-compatible endpoint.',
+      technologies: ['TypeScript', 'Node.js', 'CLI', 'AI'],
+      github: 'https://github.com/Koushikmondal06/Comet',
+      demo: '#',
+      featured: true,
+    },
+    {
       title: 'Eco-Tracker',
       description: 'Collaborative task management with real-time updates, drag-and-drop, and team collaboration features.',
       technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
